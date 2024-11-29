@@ -17,29 +17,43 @@ namespace ArshakAssignment
             this.Euro = euro;
             this.SEK = sek;
         }
-        public decimal ConvertDollarToSek(decimal amount)
+
+        private decimal ConvertAmount(decimal amount,decimal from,decimal to)
         {
-            return (amount*this.SEK)/this.Dollar;
+            return(amount* to)/ from;
         }
-        public decimal ConvertEuroToSek(decimal amount)
+        public decimal Convert(Money currentMoney, Currency newcurrency)
         {
-            return (amount * this.SEK) / this.Euro;
-        }
-        public decimal ConvertSekToDollar(decimal amount)
-        {
-            return (amount * this.Dollar) / this.SEK;
-        }
-        public decimal ConvertSekToEuro(decimal amount)
-        {
-            return (amount * this.Euro) / this.SEK;
-        }
-        public decimal ConvertDollarToEuro(decimal amount) 
-        {
-            return(amount*this.Euro)/this.Dollar;
-        }
-        public decimal ConvertEuroToDollar(decimal amount)
-        {
-            return (amount * this.Dollar) / this.Euro;
+            Currency currentCurrency = currentMoney.Currency;
+            decimal currentAmount = currentMoney.Amount;
+            decimal newAmount = currentMoney.Amount;
+            switch (currentCurrency)
+            {
+                case Currency.Dollar:
+                    switch (newcurrency)
+                    {
+                        case Currency.Euro:newAmount=ConvertAmount(currentAmount,this.Dollar,this.Euro); break;
+                        case Currency.SEK: newAmount=ConvertAmount(currentAmount,this.Dollar,this.SEK); break;
+                      //default: Console.WriteLine("choose a suitable currency to convert current currency");break;
+                    }break;
+                case Currency.Euro:
+                    switch (newcurrency)
+                    {
+                        case Currency.Dollar: newAmount = ConvertAmount(currentAmount, this.Euro,this.Dollar); break;
+                        case Currency.SEK: newAmount = ConvertAmount(currentAmount, this.Euro, this.SEK); break;
+                      //default: Console.WriteLine("choose a suitable currency to convert current currency"); break;
+                    }
+                    break;
+                case Currency.SEK:
+                    switch (newcurrency)
+                    {
+                        case Currency.Dollar: newAmount = ConvertAmount(currentAmount, this.SEK, this.Dollar); break;
+                        case Currency.Euro: newAmount = ConvertAmount(currentAmount, this.SEK, this.Euro); break;
+                     // default: Console.WriteLine("choose a suitable currency to convert current currency"); break;
+                    }
+                    break;
+            }
+            return newAmount;
         }
 
     }

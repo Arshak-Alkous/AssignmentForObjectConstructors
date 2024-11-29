@@ -15,43 +15,24 @@ namespace ArshakAssignment
             this.Amount = amount;
             this.Currency = currency;
         }
-        public void ChangingCurrency(CurrencyConverter currencyConverter,Currency newcurrency) 
+        public Money ChangingCurrency(CurrencyConverter currencyConverter,Currency newcurrency) 
         {
-            Currency currentCurrency=this.Currency;
-            decimal currentAmount=this.Amount;
-            decimal newAmount=0.0m;
-            switch (currentCurrency) 
-            {
-                case Currency.Dollar:
-                    switch (newcurrency)
-                    {
-                        case Currency.SEK: newAmount = currencyConverter.ConvertDollarToSek(currentAmount);
-                            
-                            break;
-                        case Currency.Euro: newAmount = currencyConverter.ConvertDollarToEuro(currentAmount); break;
-                    }
-                    break;
-                case Currency.Euro:
-                    switch (newcurrency)
-                    {
-                        case Currency.SEK: newAmount = currencyConverter.ConvertEuroToSek(currentAmount); break;
-                        case Currency.Dollar: newAmount = currencyConverter.ConvertEuroToDollar(currentAmount); break;
-                    }
-                    break;
-                case Currency.SEK:
-                    switch (newcurrency)
-                    {
-                        case Currency.Dollar: newAmount = currencyConverter.ConvertSekToDollar(currentAmount); break;
-                        case Currency.Euro: newAmount = currencyConverter.ConvertSekToEuro(currentAmount); break;
-                    }
-                    break;
-            }
-            this.Amount = newAmount;
-            this.Currency = newcurrency;
 
-            Console.WriteLine("newAmount: " + newAmount + ", newcurrency: " + newcurrency);
+            Currency currentCurrency = this.Currency;
+            decimal currentAmount=this.Amount;
+            Money currentMoney = new Money(currentAmount, currentCurrency);
+            decimal newAmount=0.0m;
+            if (currentCurrency != newcurrency) {
+                newAmount = currencyConverter.Convert(currentMoney, newcurrency);
+                Console.WriteLine("changing currency successful");
+                return new Money(newAmount, newcurrency);
+            }
+            else
+            {
+                Console.WriteLine("choose a suitable currency to convert current currency");
+                return currentMoney;
+            }
             
-           // return new Money(newAmount, newcurrency);
 
         }
     }
